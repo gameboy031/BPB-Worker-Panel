@@ -2,12 +2,13 @@ name: Sync BPB-Worker-Panel
 on:
   schedule:
     - cron: '0 0 * * *' # 每天0点0分执行一次
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout fork
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # 使用最新版本v3
       - name: Set up Git
         run: |
           git config --global user.email "zenghaiping880@gmail.com"
@@ -17,4 +18,8 @@ jobs:
       - name: Fetch upstream
         run: git fetch upstream
       - name: Merge upstream
-        run: git merge upstream/main
+        run: git merge upstream/main --allow-unrelated-histories  # 添加允许合并不相关历史的参数
+      - name: Push changes
+        run: |
+          git push origin main  # 推送到自己的仓库
+
