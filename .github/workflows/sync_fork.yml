@@ -2,7 +2,7 @@ name: Sync Fork with Upstream Repository
 
 on:
   schedule:
-    - cron: '0 0 * * 1'  # 每周一 UTC 0:00 执行，按需修改执行频率
+    - cron: '12 19 * * *'  # 每周一 UTC 0:00 执行，按需修改执行频率
   workflow_dispatch:
 
 jobs:
