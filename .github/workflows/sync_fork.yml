@@ -1,25 +1,36 @@
-name: Sync BPB-Worker-Panel
+name: Sync Fork with Upstream Repository
+
 on:
   schedule:
-    - cron: '0 0 * * *' # 每天0点0分执行一次
+    - cron: '0 0 * * 1'  # 每周一 UTC 0:00 执行，按需修改执行频率
   workflow_dispatch:
+
 jobs:
   sync:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout fork
-        uses: actions/checkout@v3  # 使用最新版本v3
-      - name: Set up Git
-        run: |
-          git config --global user.email "zenghaiping880@gmail.com"
-          git config --global user.name "gameboy031"
-      - name: Set upstream repository
-        run: git remote add upstream https://github.com/bia-pain-bache/BPB-Worker-Panel
-      - name: Fetch upstream
-        run: git fetch upstream
-      - name: Merge upstream
-        run: git merge upstream/main --allow-unrelated-histories  # 添加允许合并不相关历史的参数
-      - name: Push changes
-        run: |
-          git push origin main  # 推送到自己的仓库
 
+    steps:
+    - name: Checkout your repository
+      uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+
+    - name: Set up Git
+      run: |
+        git config user.name "gameboy031"
+        git config user.email "zenghaiping880@gmail.com"
+        
+    - name: Add upstream repository
+      run: git remote add upstream https://github.com/bia-pain-bache/BPB-Worker-Panel.git
+    
+    - name: Fetch upstream
+      run: git fetch upstream
+
+    - name: Merge upstream changes
+      run: |
+        git checkout main
+        git merge upstream/main
+
+    - name: Push changes
+      run: |
+        git push origin main
